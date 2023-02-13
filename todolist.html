@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Do and Done</title>
+    <link rel="icon" type="image/x-icon" href="todoforyouicon.png">
+    <link rel="stylesheet" type="text/css" href="todolist.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@600&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="stylesheet" type="text/css" href="dist/dragula.css">
+
+</head>
+
+<body>
+
+    <div id="flexbox">
+        <div class="flexchildren" id="flexChild3">
+            <h1 class="title">To Do</h1>
+            <button class="add" id="add3">+ Add Task</button>
+        </div>
+        <div class="flexchildren" id="flexChild2">
+            <h1 class="title">Doing</h1>
+            <button class="add" id="add2">+ Add Task</button>
+        </div>
+        <div class="flexchildren" id="flexChild1">
+            <button id="logout">Log Out</button>
+            <h1 class="title">Done</h1>
+            <button class="add" id="add1">+ Add Task</button>
+        </div>
+    </div>
+
+
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/dragula/3.7.3/dragula.min.js'>
+
+    </script>
+
+    <script>
+        dragula([document.querySelector('#flexChild1'), document.querySelector('#flexChild2'), document.querySelector('#flexChild3')], {
+            moves: function (el, target, source, sibling) {
+                return el.classList.contains('newTask');
+                return true;
+            },
+            accepts: function (el, target, source, sibling) {
+                return sibling.classList.contains('add');
+            },
+
+        });
+
+        var add1 = document.getElementById('add1');
+        var add2 = document.getElementById('add2');
+        var add3 = document.getElementById('add3');
+        var flexChild1 = document.getElementById('flexChild1');
+        var flexChild2 = document.getElementById('flexChild2');
+        var flexChild3 = document.getElementById('flexChild3');
+
+
+        add1.onclick = function () {
+            const newTask = document.createElement('button');
+            const content = document.createElement("INPUT");
+            content.classList.add("content");
+            content.placeholder = "Untitled";
+            newTask.appendChild(content);
+            newTask.classList.add("newTask");
+            flexChild1.insertBefore(newTask, add1);
+            const del = document.createElement('button');
+            del.classList.add("delete");
+            del.innerText = "x";
+            newTask.append(del);
+            del.onclick = function () {
+                newTask.parentNode.removeChild(newTask);
+                del.parentNode.removeChild(del);
+            }
+
+
+        }
+
+
+        add2.onclick = function () {
+            const newTask = document.createElement('button');
+            const content = document.createElement("INPUT");
+            content.classList.add("content");
+            content.placeholder = "Untitled";
+            newTask.appendChild(content);
+            newTask.classList.add("newTask");
+            flexChild2.insertBefore(newTask, add2);
+            const del = document.createElement('button');
+            del.classList.add("delete");
+            del.innerText = "x";
+            newTask.append(del);
+            del.onclick = function () {
+                newTask.parentNode.removeChild(newTask);
+                del.parentNode.removeChild(del);
+            }
+        }
+
+        add3.onclick = function () {
+            const newTask = document.createElement('button');
+            const content = document.createElement("INPUT");
+            content.classList.add("content");
+            content.placeholder = "Untitled";
+            newTask.appendChild(content);
+            newTask.classList.add("newTask");
+            flexChild3.insertBefore(newTask, add3);
+            const del = document.createElement('button');
+            del.classList.add("delete");
+            del.innerText = "x";
+            newTask.append(del);
+            del.onclick = function () {
+                newTask.parentNode.removeChild(newTask);
+                del.parentNode.removeChild(del);
+            }
+
+        }
+
+
+
+
+
+
+    </script>
+
+    <script type=module>
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
+        import { getDatabase, set, ref, update } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-database.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js";
+
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyB47ykr_s1XDVm_xTX0zcpG3O2_RuCfpM4",
+            authDomain: "do-and-done-website-login.firebaseapp.com",
+            databaseURL: "https://do-and-done-website-login-default-rtdb.firebaseio.com",
+            projectId: "do-and-done-website-login",
+            storageBucket: "do-and-done-website-login.appspot.com",
+            messagingSenderId: "508164478553",
+            appId: "1:508164478553:web:cab8f61efa2844cc354348"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
+        const auth = getAuth();
+
+        logout.addEventListener('click', (e) => {
+                signOut(auth).then(() => {
+                    // Sign-out successful.
+                    window.location = 'index.html';
+                    }).catch((error) => {
+                    // An error happened.
+                    });
+
+            }); 
+
+            const user = auth.currentUser;
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                // User is signed in, see docs for a list of available properties
+                // https://firebase.google.com/docs/reference/js/firebase.User
+                const uid = user.uid;
+                // ...
+            } else {
+                // User is signed out
+                // ...
+            }
+        });
+
+    </script>
+
+</body>
+
+</html>
