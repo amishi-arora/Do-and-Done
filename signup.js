@@ -1,6 +1,5 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
-import { getDatabase, set, ref, update } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-database.js";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js";
 
 // Your web app's Firebase configuration
@@ -16,9 +15,7 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const database = getDatabase(app);
 const auth = getAuth();
-var password = document.getElementById("password").value
 
 function validatepassword(confirmpassword, password) {
     if (confirmpassword == password) {
@@ -39,22 +36,15 @@ signup.addEventListener('click', (e) => {
         return
     }
     createUserWithEmailAndPassword(auth, email, password)
-
-        .then((userCredential) => {
-            // Signed in 
-            const user = userCredential.user;
-            set(ref(database, 'users/' + user.uid), {
-                email: email,
-                password: password
-            });
+        
+        .then(() => {
             alert('User Created!');
-            window.location = 'todolist.html';
+            setTimeout(() => {
+                window.location = 'todolist.html';
+            }, 500);
         })
         .catch((error) => {
-            const errorCode = error.code;
-            const errorMessage = error.message;
-
-            alert(errorMessage);
+            alert(error.message);
         });
 });
 
@@ -62,20 +52,13 @@ login.addEventListener('click', (e) => {
     var loginemail = document.getElementById("loginemail").value;
     var loginpassword = document.getElementById("loginpassword").value;
     signInWithEmailAndPassword(auth, loginemail, loginpassword)
-        .then((userCredential) => {
-            // Signed in 
-            const user = userCredential.user;
-            const dT = new Date();
-            update(ref(database, 'users/' + user.uid), {
-                last_login: dT,
-            })
+        .then(() => {
             alert("User logged in!");
-            window.location = 'todolist.html';
+            setTimeout(() => {
+                window.location = 'todolist.html';
+            }, 500);
         })
         .catch((error) => {
-            const errorCode = error.code;
-            const errorMessage = error.message;
-            alert(errorMessage);
+            alert(error.message);
         });
-
 });
